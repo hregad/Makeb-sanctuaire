@@ -6,8 +6,95 @@
     <title>Rapport Scrollytelling</title>
     <link href="https://unpkg.com/maplibre-gl@4.0.0/dist/maplibre-gl.css" rel="stylesheet" />
     <style>
-        /* Le CSS se trouve dans la section suivante */
-    </style>
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f4f4f9;
+        color: #333;
+    }
+
+    /* Conteneur principal */
+    .section-container {
+        /* Permet de contenir tous les blocs de contenu et figures */
+        position: relative;
+    }
+
+    /* 1. Bloc de Texte */
+    .content-block {
+        /* La colonne de texte qui défile */
+        max-width: 600px; /* Largeur de lecture confortable */
+        margin: 0 auto;
+        padding: 10vh 20px; /* Espacement vertical pour l'effet de défilement */
+        min-height: 100vh; /* Assure que le texte est assez long pour déclencher les figures */
+        box-sizing: border-box;
+        position: relative; /* Assure le bon empilement */
+        z-index: 10;
+        background-color: #f4f4f9; /* S'assure que le texte masque la figure précédente */
+    }
+
+    /* 2. Figure Plein Écran (Full-Screen) */
+    .figure-full-screen {
+        /* Le conteneur qui doit occuper toute la vue */
+        height: 100vh;
+        width: 100%;
+        position: sticky; /* L'élément clé pour le ScrollMagic-like effect */
+        top: 0; /* Se fixe en haut de l'écran */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        z-index: 5; /* Moins prioritaire que le texte */
+        background-color: #222; /* Fond pour les figures sombres (cartes) */
+    }
+
+    .figure-content {
+        /* Contenu à l'intérieur de la figure */
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain; /* S'assure que l'image tient */
+    }
+
+    /* Styles spécifiques à MapLibre */
+    .map-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .figure-caption {
+        position: absolute;
+        bottom: 20px;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 5px 10px;
+        z-index: 20;
+        font-size: 0.9em;
+    }
+
+    /* Styles pour les illustrations dans les tableaux/cartes */
+    .thumb {
+        width: 50px;
+        height: 30px;
+        object-fit: cover;
+    }
+
+    .illustration-overlay {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 30;
+        /* Ces éléments seront animés par ScrollMagic/GSAP */
+    }
+    .illustration {
+        width: 150px;
+        height: auto;
+        display: block;
+        margin-bottom: 10px;
+        opacity: 0; /* Caché par défaut, révélé par ScrollMagic */
+    }
+</style>
 </head>
 <body>
 
