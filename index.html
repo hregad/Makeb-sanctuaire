@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport Scrollytelling</title>
+    <link href="https://unpkg.com/maplibre-gl@4.0.0/dist/maplibre-gl.css" rel="stylesheet" />
+    <style>
+        /* Le CSS se trouve dans la section suivante */
+    </style>
+</head>
+<body>
+
+    <section class="section-container" id="introduction">
+        <div class="figure-full-screen" id="fig-intro">
+            <img src="./images/mission_concept.jpg" alt="Image illustrant le concept de la mission" class="figure-content">
+        </div>
+        <div class="content-block">
+            <h1>Rapport de Mission : Opérations Aériennes</h1>
+            <p>Ici, le texte d'introduction et le contexte de la mission. L'utilisateur défile vers le bas pour révéler la première section thématique.</p>
+        </div>
+    </section>
+
+    <section class="section-container" id="defenses">
+        
+        <div class="figure-full-screen" id="fig-tableau-defenses">
+            <table class="figure-content">
+                <caption>Tableau 1 : Spécifications des équipements défensifs</caption>
+                <thead>
+                    <tr><th>Équipement</th><th>Portée (km)</th><th>Illustration</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Défense Type A</td><td>5</td><td><img src="./images/defense_a.jpg" alt="Type A" class="thumb"></td></tr>
+                    <tr><td>Défense Type B</td><td>12</td><td><img src="./images/defense_b.jpg" alt="Type B" class="thumb"></td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="content-block">
+            <h2>II. Équipements Défensifs</h2>
+            <p>Ce bloc de texte explique en détail le Tableau 1 ci-dessus. Il met en évidence les performances clés, les types de menaces gérées par ces systèmes et leur fiabilité. C'est ici que l'analyse commence.</p>
+        </div>
+
+        <div class="figure-full-screen" id="map-general-defenses">
+            <div id="map-defenses" class="map-container"></div>
+            <p class="figure-caption">Carte générale du déploiement des défenses.</p>
+        </div>
+        
+        <div class="content-block">
+            <p>Cette carte (ci-dessus) illustre la densité globale du déploiement. Notez la forte concentration dans la zone côtière et la couverture plus faible dans le secteur nord-ouest. C'est une vulnérabilité potentielle.</p>
+        </div>
+
+        <div class="figure-full-screen" id="map-zoom-defenses">
+            <div id="map-zoomed-defenses" class="map-container"></div>
+            <div class="illustration-overlay" id="overlay-defenses">
+                <img src="./images/zone_alpha.jpg" alt="Zone Alpha" id="img-zone-alpha" class="illustration">
+                <img src="./images/zone_beta.jpg" alt="Zone Beta" id="img-zone-beta" class="illustration">
+            </div>
+            <p class="figure-caption">Zoom sur les Secteurs A et B pour l'analyse des défenses.</p>
+        </div>
+
+        <div class="content-block">
+            <p><strong>Secteur A :</strong> Les systèmes Type A sont regroupés ici. Notre analyse recommande une approche furtive par l'ouest. <strong>Secteur B :</strong> Le déploiement est plus dispersé, combinant les systèmes A et B, nécessitant une analyse de pénétration plus complexe.</p>
+        </div>
+    </section>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/debug.addIndicators.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/animation.gsap.min.js"></script>
+    <script src="https://unpkg.com/maplibre-gl@4.0.0/dist/maplibre-gl.js"></script>
+
+    <script src="./js/scrollytelling.js"></script>
+</body>
+</html>
