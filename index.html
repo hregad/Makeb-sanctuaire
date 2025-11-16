@@ -35,32 +35,50 @@
         background-color: #f4f4f9; /* S'assure que le texte masque la figure précédente */
     }
 
-    /* 2. Figure Plein Écran (Full-Screen) */
-    .figure-full-screen {
-        /* Le conteneur qui doit occuper toute la vue */
-        height: 100vh;
-        width: 100%;
-        position: sticky; /* L'élément clé pour le ScrollMagic-like effect */
-        top: 0; /* Se fixe en haut de l'écran */
+.figure-full-screen {
+        /* Le Pinning gère la fixation verticale (top: 0) */
+        width: 50vw; /* La figure occupe la moitié gauche de l'écran */
+        left: 0; /* Alignement sur la gauche */
+        top: 0; 
+        
+        /* Retrait du fond sombre pour la carte, la rendant transparente si le style le permet */
+        background-color: transparent; 
+        
+        /* Assure que la carte est bien centrée si elle est carrée */
         display: flex;
         justify-content: center;
         align-items: center;
-        overflow: hidden;
-        z-index: 5; /* Moins prioritaire que le texte */
-        background-color: #222; /* Fond pour les figures sombres (cartes) */
     }
 
-    .figure-content {
-        /* Contenu à l'intérieur de la figure */
-        max-width: 90%;
-        max-height: 90%;
-        object-fit: contain; /* S'assure que l'image tient */
+    .content-block {
+        max-width: 1000px; /* On élargit la zone de défilement */
+        margin: 0 auto;
+        
+        /* Pousser le contenu du texte vers la droite pour laisser la place à la carte */
+        margin-left: 50vw; 
+        width: 50vw; /* Le contenu textuel occupe la moitié droite */
+        
+        padding: 10vh 40px; /* Padding ajusté */
+        box-sizing: border-box;
+        min-height: 100vh;
+        
+        background-color: #f4f4f9; /* Assure que le texte masque les figures précédentes */
+        position: relative; 
+        z-index: 10;
     }
 
-    /* Styles spécifiques à MapLibre */
+    /* Le conteneur de carte MapLibre */
     .map-container {
-        width: 100%;
-        height: 100%;
+        /* Pour respecter le format carré, on peut fixer une taille maximale */
+        width: 90%; 
+        height: 90%;
+        max-width: 600px; /* Optionnel : Limiter la taille max de la carte */
+        max-height: 600px;
+    }
+    
+    /* Le fond de la carte MapLibre lui-même (peut nécessiter un style MapLibre personnalisé pour être transparent) */
+    .maplibregl-canvas {
+        background-color: transparent !important;
     }
 
     .figure-caption {
