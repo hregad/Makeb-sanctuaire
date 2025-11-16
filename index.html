@@ -124,9 +124,10 @@
             <h1>Rapport de Mission : Opérations Aériennes</h1>
             <p>Ici, le texte d'introduction et le contexte de la mission. L'utilisateur défile vers le bas pour révéler la première section thématique.</p>
         </div>
+        
     </section>
 
-    <section class="section-container" id="defenses">
+ <section class="section-container" id="defenses">
         
         <div class="figure-full-screen" id="fig-tableau-defenses">
             <table class="figure-content">
@@ -146,26 +147,74 @@
             <p>Ce bloc de texte explique en détail le Tableau 1 ci-dessus. Il met en évidence les performances clés, les types de menaces gérées par ces systèmes et leur fiabilité. C'est ici que l'analyse commence.</p>
         </div>
 
-        <div class="figure-full-screen" id="map-general-defenses">
+        <div class="content-block" id="map-start-trigger">
+            <p>
+                La zone opérationnelle est caractérisée par des **zones de hauteurs** (indiquées par les hachures sur la carte) qui offrent une protection naturelle. L'organisation des défenses suit ces reliefs. 
+                <br>
+                La carte générale (à gauche) révèle la densité du déploiement.
+            </p>
+        </div>
+
+        <div class="figure-full-screen" id="fig-carte-defenses">
             <div id="map-defenses" class="map-container"></div>
-            <p class="figure-caption">Carte générale du déploiement des défenses.</p>
+            <p class="figure-caption">Analyse du déploiement des équipements défensifs.</p>
         </div>
         
         <div class="content-block">
-            <p>Cette carte (ci-dessus) illustre la densité globale du déploiement. Notez la forte concentration dans la zone côtière et la couverture plus faible dans le secteur nord-ouest. C'est une vulnérabilité potentielle.</p>
+            <p>Cette vue d'ensemble montre une forte concentration dans les secteurs 1 et 2, des zones que nous allons analyser en détail. La densité y est maximale, rendant une approche frontale impossible. Les zones moins couvertes correspondent souvent aux accès naturels difficiles.</p>
         </div>
 
-        <div class="figure-full-screen" id="map-zoom-defenses">
-            <div id="map-zoomed-defenses" class="map-container"></div>
-            <div class="illustration-overlay" id="overlay-defenses">
-                <img src="./images/zone_alpha.jpg" alt="Zone Alpha" id="img-zone-alpha" class="illustration">
-                <img src="./images/zone_beta.jpg" alt="Zone Beta" id="img-zone-beta" class="illustration">
-            </div>
-            <p class="figure-caption">Zoom sur les Secteurs A et B pour l'analyse des défenses.</p>
+        <div class="content-block" id="trigger-secteur-1">
+            <p>
+                <strong>Secteur 1 - Zone Alpha :</strong> Ce secteur est protégé par un bouclier électromagnétique à basse altitude. L'analyse de sa structure (bordure rouge sur le zoom) montre qu'une approche par les hauteurs est impossible. 
+                <br>
+                Le zoom cible les POI critiques (points d'intérêt) associés à ce bouclier.
+            </p>
+        </div>
+
+        <div class="content-block" id="trigger-secteur-2">
+            <p>
+                <strong>Secteur 2 - Zone Beta :</strong> Contrairement au Secteur 1, le Secteur 2 présente une défense plus dispersée, combinant des unités mobiles et des installations fixes. L'absence de relief important dans cette zone (hauteurs) suggère une menace venant de la surface.
+                <br>
+                Le zoom révèle que les points d'intérêts (POI) y sont moins groupés, mais chaque POI est critique.
+            </p>
+        </div>
+
+        <div class="content-block" id="end-defenses-trigger">
+            <p>Synthèse : Les défenses sont concentrées mais prévisibles. Les vulnérabilités sont dans le Secteur 2. Maintenant, examinons les **réseaux de communication**, qui sont souvent le talon d'Achille de ce type de déploiement.</p>
+        </div>
+    </section>
+
+    <section class="section-container" id="communication">
+
+        <div class="figure-full-screen" id="fig-schema-comm">
+            <img src="./images/schema_comm.png" alt="Schéma du réseau de communication" class="figure-content">
         </div>
 
         <div class="content-block">
-            <p><strong>Secteur A :</strong> Les systèmes Type A sont regroupés ici. Notre analyse recommande une approche furtive par l'ouest. <strong>Secteur B :</strong> Le déploiement est plus dispersé, combinant les systèmes A et B, nécessitant une analyse de pénétration plus complexe.</p>
+            <h2>III. Équipements de Communication</h2>
+            <p>Description détaillée de l'architecture du réseau de communication. Explication des nœuds principaux et des relais secondaires. Ce texte défile pour présenter le schéma à gauche.</p>
+        </div>
+        
+        <div class="content-block" id="map-start-comm-trigger">
+            <p>La carte suivante illustre le déploiement spatial de ce réseau, mettant en évidence les lignes de communication principales (traits tiretés).</p>
+        </div>
+        
+        <div class="figure-full-screen" id="fig-carte-comm">
+            <div id="map-communication" class="map-container"></div>
+            <p class="figure-caption">Réseau de communication et ses lignes principales.</p>
+        </div>
+        
+        <div class="content-block">
+            <p>Analyse de la vue d'ensemble : Le réseau est centralisé autour de la zone X, créant un point de défaillance unique. Une perturbation ici affecterait toute la chaîne.</p>
+        </div>
+
+    </section>
+
+    <section class="section-container" id="mercenaires">
+        <div class="content-block">
+            <h2>IV. Capacités des Mercenaires</h2>
+            <p>Le contenu de la section finale viendra ici, suivi des figures correspondantes.</p>
         </div>
     </section>
     
