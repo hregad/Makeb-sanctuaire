@@ -170,55 +170,52 @@ function loadGeoJsonLayers() {
 
 
 // ==========================================
-// 6. PINNING : CARTE MAPLIBRE GÉNÉRALE
+// 6. PINNING : CARTE MAPLIBRE GÉNÉRALE (Reste en dehors du load listener)
 // ==========================================
-
-const mapPinStartTrigger = document.querySelector('#defenses .content-block:nth-of-type(3)');
-
-// Calcul de la Durée de Pinning (reste le même)
-let totalPinDuration = 0;
-const contentBlocks = document.querySelectorAll('#defenses .content-block');
-for (let i = 2; i < contentBlocks.length; i++) {
-    totalPinDuration += contentBlocks[i].offsetHeight;
-}
-
-new ScrollMagic.Scene({
-    triggerElement: mapPinStartTrigger, 
-    triggerHook: 0,                   
-    duration: totalPinDuration        
-})
-.setPin(figurePinCarte) 
-// .addIndicators({name: "Carte Pin"}) 
-.addTo(controller);
-
+// ... (Le code de Pinning de la figurePinCarte reste inchangé)
+// ... (Il doit être exécuté avant le on('load') pour fixer le conteneur)
 
 // ==========================================
-// 8. SCÈNE D'ANIMATION 1 : MAP FLY TO (Première vue)
+// 8. LOGIQUE CARTE ET ANIMATION (Encapsulée dans map.on('load'))
 // ==========================================
 
-new ScrollMagic.Scene({
-    triggerElement: mapPinStartTrigger, 
-    triggerHook: 0.1, // Déclenche juste après le début du pinning
-    duration: 0      // Instant
-})
-.on('enter', () => {
-    // 1. Assurer la taille et le chargement des données
-    map.resize(); 
+map.on('load', () => {
+    mapInitialized = true;
+    console.log("Style de la carte MapLibre chargé. Début de la logique ScrollMagic.");
+
+    // --- ÉTAPE 1 : Chargement des couches GeoJSON ---
+    // On charge les couches une fois que le style est prêt
     loadGeoJsonLayers();
+
+    // --- ÉTAPE 2 : Scène d'Animation 1 (Map Fly To) ---
+    new ScrollMagic.Scene({
+        triggerElement: mapPinStartTrigger, 
+        triggerHook: 0.1, 
+        duration: 0      
+    })
+    .on('enter', () => {
+        // 1. FORCER LE REDIMENSIONNEMENT (FIX pour la carte invisible)
+        map.resize(); 
+
+        // 2. Animer la carte vers la vue générale
+        map.flyTo({
+            center: [2.35, 48.86], // Exemple : Coordonnées de la zone générale
+            zoom: 9,
+            essential: true 
+        });
+        console.log("Animation 1: flyTo vers la vue générale.");
+
+        // 3. Rendre les couches Défenses/POI visibles (MAINTENANT SÛR)
+        map.setLayoutProperty('poi-layer', 'visibility', 'visible');
+        map.setLayoutProperty('heights-layer', 'visibility', 'visible');
+        
+    })
+    // .addIndicators({name: "Map FlyTo 1"}) 
+    .addTo(controller);
+
+
+    // *************************************************************
+    // Les scènes d'animation suivantes (Zooms 2 & 3) seront ajoutées ici
+    // *************************************************************
     
-    // 2. Animer la carte vers la vue générale
-    map.flyTo({
-        center: [2.35, 48.86], // Exemple : Coordonnées de la zone générale
-        zoom: 9,
-        essential: true 
-    });
-    console.log("Animation 1: flyTo vers la vue générale.");
-
-    // 3. Rendre les couches Défenses/POI visibles pour la vue générale
-    map.setLayoutProperty('poi-layer', 'visibility', 'visible');
-    map.setLayoutProperty('heights-layer', 'visibility', 'visible');
-})
-// .addIndicators({name: "Map FlyTo 1"}) 
-.addTo(controller);
-
-// ... (Les prochaines scènes d'animation viendront ici)
+}); // Fin de map.on('load')
