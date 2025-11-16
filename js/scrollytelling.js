@@ -70,45 +70,122 @@ new ScrollMagic.Scene({
 .addTo(controller);
 
 
+// ... (Les sections 1 à 4 restent inchangées)
+
 // ==========================================
 // 5. INITIALISATION DE LA CARTE MAPLIBRE
 // ==========================================
 
-// Le conteneur de la carte est maintenant dans une nouvelle figure
 const mapContainer = document.getElementById('map-defenses');
+const figurePinCarte = document.getElementById('fig-carte-defenses');
+
 const map = new maplibregl.Map({
-    container: mapContainer, // ID du conteneur de carte HTML
+    container: mapContainer,
     style: 'https://demotiles.maplibre.org/style.json', // Style de base
-    center: [0, 0],         // Coordonnées initiales (seront écrasées par flyTo)
+    center: [0, 0],
     zoom: 1,
     interactive: false 
 });
 console.log("Carte MapLibre initialisée (ID: map-defenses).");
 
-// Variable pour suivre l'état des couches de la carte
 let layersLoaded = false;
+let mapInitialized = false;
+
+// Une fois que la carte a chargé son style initial, on peut définir le drapeau
+map.on('load', () => {
+    mapInitialized = true;
+    console.log("Style de la carte MapLibre chargé.");
+});
+
+
+// ==========================================
+// 7. LOGIQUE MAPLIBRE : CHARGEMENT DES COUCHES (Maintenant une fonction séparée)
+// ==========================================
+
+/**
+ * Charge les sources GeoJSON et ajoute les couches correspondantes à la carte.
+ * Est appelée une seule fois lors du premier déclenchement de ScrollMagic.
+ */
+function loadGeoJsonLayers() {
+    if (layersLoaded || !mapInitialized) return; // Ne rien faire si déjà chargé ou si le style n'est pas prêt
+
+    // 1. Charger les sources de données
+    map.addSource('heights-data', {
+        type: 'geojson',
+        data: './geojson/heights_surfaces.geojson' 
+    });
+    map.addSource('comm-data', {
+        type: 'geojson',
+        data: './geojson/comm_lines.geojson'     
+    });
+    map.addSource('poi-data', {
+        type: 'geojson',
+        data: './geojson/POI_Area.geojson'       
+    });
+
+    // 2. Ajouter les couches (Initialement cachées, sauf indication)
+    
+    // Couche 'POI_Area'
+    map.addLayer({
+        id: 'poi-layer',
+        type: 'fill',
+        source: 'poi-data',
+        layout: { 'visibility': 'none' }, // Cachée au départ
+        paint: {
+            'fill-color': '#f89a9f', 
+            'fill-opacity': 0.7,
+            'fill-outline-color': '#333'
+        }
+    });
+
+    // Couche 'heights_surfaces'
+    map.addLayer({
+        id: 'heights-layer',
+        type: 'fill',
+        source: 'heights-data',
+        layout: { 'visibility': 'none' }, // Cachée au départ
+        paint: {
+            'fill-color': '#ccc', 
+            'fill-opacity': 0.5,
+            'fill-outline-color': '#333'
+        }
+    });
+
+    // Couche 'comm_lines'
+    map.addLayer({
+        id: 'comm-layer',
+        type: 'line',
+        source: 'comm-data',
+        layout: { 'visibility': 'none' }, // Cachée au départ
+        paint: {
+            'line-color': '#0080ff', 
+            'line-width': 3,
+            'line-dasharray': [1, 2] 
+        }
+    });
+
+    layersLoaded = true;
+    console.log("Couches GeoJSON définies dans MapLibre.");
+}
 
 
 // ==========================================
 // 6. PINNING : CARTE MAPLIBRE GÉNÉRALE
 // ==========================================
 
-const figurePinCarte = document.getElementById('fig-carte-defenses');
 const mapPinStartTrigger = document.querySelector('#defenses .content-block:nth-of-type(3)');
 
-// Calcul de la Durée de Pinning : 
-// La carte doit rester fixe pour tous les blocs de contenu restants de la section #defenses.
+// Calcul de la Durée de Pinning (reste le même)
 let totalPinDuration = 0;
 const contentBlocks = document.querySelectorAll('#defenses .content-block');
-// On commence à partir du troisième bloc (index 2) car les deux premiers étaient pour le tableau
 for (let i = 2; i < contentBlocks.length; i++) {
     totalPinDuration += contentBlocks[i].offsetHeight;
 }
 
 new ScrollMagic.Scene({
     triggerElement: mapPinStartTrigger, 
-    triggerHook: 0,                   // Démarre quand le haut du bloc atteint le haut de la fenêtre
-    duration: totalPinDuration        // Dure pour la hauteur cumulée des blocs de texte suivants
+    triggerHook: 0,                   
+    duration: totalPinDuration        
 })
 .setPin(figurePinCarte) 
 // .addIndicators({name: "Carte Pin"}) 
@@ -116,110 +193,32 @@ new ScrollMagic.Scene({
 
 
 // ==========================================
-// 7. LOGIQUE MAPLIBRE : CHARGEMENT & PREMIÈRE ANIMATION
+// 8. SCÈNE D'ANIMATION 1 : MAP FLY TO (Première vue)
 // ==========================================
 
-/**
- * Charge les sources GeoJSON et ajoute les couches correspondantes à la carte.
- */
-function loadGeoJsonLayers() {
-    if (layersLoaded || !map.isStyleLoaded()) return;
-
-    // 1. Charger les sources de données
-    map.addSource('heights-data', {
-        type: 'geojson',
-        data: './geojson/heights_surfaces.geojson' // Fichier surfaces de hauteurs
-    });
-    map.addSource('comm-data', {
-        type: 'geojson',
-        data: './geojson/comm_lines.geojson'     // Fichier lignes de communication
-    });
-    map.addSource('poi-data', {
-        type: 'geojson',
-        data: './geojson/POI_Area.geojson'       // Fichier surfaces POI
-    });
-
-    // 2. Ajouter les couches
+new ScrollMagic.Scene({
+    triggerElement: mapPinStartTrigger, 
+    triggerHook: 0.1, // Déclenche juste après le début du pinning
+    duration: 0      // Instant
+})
+.on('enter', () => {
+    // 1. Assurer la taille et le chargement des données
+    map.resize(); 
+    loadGeoJsonLayers();
     
-    // Couche 'POI_Area' (Surfaces) - au fond
-    map.addLayer({
-        id: 'poi-layer',
-        type: 'fill',
-        source: 'poi-data',
-        paint: {
-            'fill-color': '#f89a9f', // Rose pastel pour les zones
-            'fill-opacity': 0.7
-        }
+    // 2. Animer la carte vers la vue générale
+    map.flyTo({
+        center: [2.35, 48.86], // Exemple : Coordonnées de la zone générale
+        zoom: 9,
+        essential: true 
     });
+    console.log("Animation 1: flyTo vers la vue générale.");
 
-    // Couche 'heights_surfaces' (Surfaces Hachurées)
-    map.addLayer({
-        id: 'heights-layer',
-        type: 'fill',
-        source: 'heights-data',
-        paint: {
-            // Un pattern de hachures serait idéal ici, mais pour la simplicité, 
-            // utilisons une couleur unie avec une bordure.
-            'fill-color': '#ccc', 
-            'fill-opacity': 0.5,
-            'fill-outline-color': '#333'
-        }
-    });
+    // 3. Rendre les couches Défenses/POI visibles pour la vue générale
+    map.setLayoutProperty('poi-layer', 'visibility', 'visible');
+    map.setLayoutProperty('heights-layer', 'visibility', 'visible');
+})
+// .addIndicators({name: "Map FlyTo 1"}) 
+.addTo(controller);
 
-    // Couche 'comm_lines' (Lignes) - avec animation de tirets
-    map.addLayer({
-        id: 'comm-layer',
-        type: 'line',
-        source: 'comm-data',
-        paint: {
-            'line-color': '#0080ff', // Bleu vif pour les lignes de comm
-            'line-width': 3,
-            // 'line-dasharray' anime les lignes en donnant un effet de mouvement
-            'line-dasharray': [1, 2] 
-        }
-    });
-
-    // Marquer les couches comme chargées
-    layersLoaded = true;
-    console.log("Couches GeoJSON chargées et ajoutées.");
-}
-
-
-// Dès que la carte MapLibre est prête, ajoutez les couches et configurez les animations
-map.on('load', () => {
-    // La logique de chargement des couches sera appelée ici
-    // Note: On ne l'appelle pas ici directement, on la configure juste après.
-
-    // 8. SCÈNE D'ANIMATION : MAP FLY TO (Première vue)
-    // Cette scène déclenche le 'flyTo' et rend les couches visibles.
-    new ScrollMagic.Scene({
-        triggerElement: mapPinStartTrigger, 
-        triggerHook: 0.1, // Déclenche un peu après le pinning
-        duration: 0      // Animation instantanée (un "saut" de vue)
-    })
-    .on('enter', () => {
-        // S'assurer que les couches sont chargées au moment du premier 'flyTo'
-        if (!layersLoaded) {
-             // Charger les couches au moment où le défilement l'exige
-            loadGeoJsonLayers();
-        }
-
-        // 1. Animer la carte vers la première zone (Zone A - vue générale des défenses)
-        map.flyTo({
-            center: [2.35, 48.86], // Exemple : sur Paris
-            zoom: 11,
-            pitch: 0,
-            bearing: 0,
-            essential: true // Rend cette animation essentielle pour l'utilisateur
-        });
-        console.log("Animation 1: flyTo vers la vue générale.");
-
-        // Rendre les couches chargées invisibles pour l'instant (on les animera plus tard si besoin)
-        // Pour cette première vue générale, on va les rendre visibles pour montrer le contexte.
-        map.setLayoutProperty('heights-layer', 'visibility', 'visible');
-        map.setLayoutProperty('comm-layer', 'visibility', 'visible');
-        map.setLayoutProperty('poi-layer', 'visibility', 'visible');
-    })
-    // .addIndicators({name: "Map FlyTo 1"}) 
-    .addTo(controller);
-});
+// ... (Les prochaines scènes d'animation viendront ici)
