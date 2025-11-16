@@ -1,0 +1,27 @@
+{
+"type": "FeatureCollection",
+"name": "comms_lines",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "fid": 1 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.285495178519634, 1.497915326041985 ], [ -0.280499539372867, 1.495499243953007 ] ] } },
+{ "type": "Feature", "properties": { "fid": 2 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.286360204532347, 1.497350817976578 ], [ -0.287875809993586, 1.494545245674409 ], [ -0.292028907870198, 1.496746388987995 ] ] } },
+{ "type": "Feature", "properties": { "fid": 3 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.285660694319468, 1.498875887840172 ], [ -0.284536534973075, 1.501125682140229 ], [ -0.288585535584597, 1.503126156345869 ] ] } },
+{ "type": "Feature", "properties": { "fid": 4 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.291962839137728, 1.496909859039652 ], [ -0.290472136265514, 1.4972604767077 ] ] } },
+{ "type": "Feature", "properties": { "fid": 5 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.28863537743811, 1.503032449706875 ], [ -0.288163403057554, 1.501764558413639 ] ] } },
+{ "type": "Feature", "properties": { "fid": 6 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.276481760776042, 1.500124790484554 ], [ -0.285341645764129, 1.498327102390529 ] ] } },
+{ "type": "Feature", "properties": { "fid": 7 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.264009546542867, 1.504486294794987 ], [ -0.266585934563774, 1.506076968370173 ], [ -0.264249136284723, 1.509587867660802 ] ] } },
+{ "type": "Feature", "properties": { "fid": 8 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.262637788199805, 1.503519662307645 ], [ -0.260378717599811, 1.502187813841928 ], [ -0.258133961853446, 1.505741090791374 ] ] } },
+{ "type": "Feature", "properties": { "fid": 9 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.260378717599811, 1.502187813841928 ], [ -0.259899395826531, 1.501908305549423 ], [ -0.25930440024388, 1.502816103224373 ] ] } },
+{ "type": "Feature", "properties": { "fid": 10 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.258336434047083, 1.50592179425149 ], [ -0.259611802762564, 1.505342262091117 ] ] } },
+{ "type": "Feature", "properties": { "fid": 11 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.264003223812053, 1.509523108812608 ], [ -0.264165359608715, 1.50815331086271 ] ] } },
+{ "type": "Feature", "properties": { "fid": 12 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.26352626391101, 1.503489523418744 ], [ -0.266066669309389, 1.499256967969179 ], [ -0.262953285508136, 1.497518429282463 ] ] } },
+{ "type": "Feature", "properties": { "fid": 13 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.248599990200236, 1.497993431885882 ], [ -0.2595878366739, 1.501165611912789 ], [ -0.263235889935511, 1.503306574035678 ] ] } },
+{ "type": "Feature", "properties": { "fid": 16 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.259425669085813, 1.48204470926491 ], [ -0.258808938792321, 1.483221098942368 ], [ -0.251611123496912, 1.480889179993337 ] ] } },
+{ "type": "Feature", "properties": { "fid": 17 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.250771093817673, 1.481526794911828 ], [ -0.249749757277344, 1.484195393118091 ], [ -0.245758037975132, 1.482862987837273 ] ] } },
+{ "type": "Feature", "properties": { "fid": 18 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.245714005545162, 1.48246052809239 ], [ -0.246953713599883, 1.482390552748931 ] ] } },
+{ "type": "Feature", "properties": { "fid": 19 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.251377515816455, 1.479962390720381 ], [ -0.252306140068167, 1.477566989856572 ], [ -0.247787440550476, 1.476079676412848 ] ] } },
+{ "type": "Feature", "properties": { "fid": 20 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.247591874825196, 1.476346225146958 ], [ -0.248487543274376, 1.47713574365692 ] ] } },
+{ "type": "Feature", "properties": { "fid": 22 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.255639346953406, 1.492956078991865 ], [ -0.255885075975318, 1.49440149805549 ] ] } },
+{ "type": "Feature", "properties": { "fid": 23 }, "geometry": { "type": "LineString", "coordinates": [ [ -0.255177631372314, 1.492202883282786 ], [ -0.252402004422822, 1.489066857552136 ] ] } }
+]
+}
