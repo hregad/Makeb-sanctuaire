@@ -6,113 +6,76 @@
     <title>Rapport Scrollytelling</title>
     <link href="https://unpkg.com/maplibre-gl@4.0.0/dist/maplibre-gl.css" rel="stylesheet" />
     <style>
-<style>
-    body, html {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        background-color: #f4f4f9;
-        color: #333;
-    }
+        /* CSS adapté pour la disposition Carte Gauche / Texte Droite */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f9;
+            color: #333;
+        }
 
-    /* Conteneur principal */
-    .section-container {
-        /* Permet de contenir tous les blocs de contenu et figures */
-        position: relative;
-    }
+        /* Conteneur principal */
+        .section-container {
+            position: relative;
+        }
 
-    /* 1. Bloc de Texte */
-    .content-block {
-        /* La colonne de texte qui défile */
-        max-width: 600px; /* Largeur de lecture confortable */
-        margin: 0 auto;
-        padding: 10vh 20px; /* Espacement vertical pour l'effet de défilement */
-        min-height: 100vh; /* Assure que le texte est assez long pour déclencher les figures */
-        box-sizing: border-box;
-        position: relative; /* Assure le bon empilement */
-        z-index: 10;
-        background-color: #f4f4f9; /* S'assure que le texte masque la figure précédente */
-    }
+        /* 1. Bloc de Texte */
+        .content-block {
+            max-width: 1000px;
+            margin: 0 auto;
+            margin-left: 50vw; /* Pousse le texte à droite */
+            width: 50vw;
+            padding: 10vh 40px;
+            box-sizing: border-box;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+            position: relative;
+            z-index: 10;
+        }
 
-.figure-full-screen {
-        /* Le Pinning gère la fixation verticale (top: 0) */
-        width: 50vw; /* La figure occupe la moitié gauche de l'écran */
-        left: 0; /* Alignement sur la gauche */
-        top: 0; 
+        /* 2. Figure Plein Écran (Full-Screen) */
+        .figure-full-screen {
+            height: 100vh;
+            width: 50vw; /* La figure occupe la moitié gauche */
+            position: sticky;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            z-index: 5;
+            background-color: #f0f0f0; /* Fond clair pour les figures statiques */
+        }
+
+        /* Styles spécifiques à MapLibre */
+        .map-container {
+            width: 100%;
+            height: 100%;
+            /* MapLibre gère son propre fond */
+        }
+
+        .figure-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 5px 10px;
+            z-index: 20;
+            font-size: 0.9em;
+        }
         
-        /* Retrait du fond sombre pour la carte, la rendant transparente si le style le permet */
-        background-color: transparent; 
-        
-        /* Assure que la carte est bien centrée si elle est carrée */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .content-block {
-        max-width: 1000px; /* On élargit la zone de défilement */
-        margin: 0 auto;
-        
-        /* Pousser le contenu du texte vers la droite pour laisser la place à la carte */
-        margin-left: 50vw; 
-        width: 50vw; /* Le contenu textuel occupe la moitié droite */
-        
-        padding: 10vh 40px; /* Padding ajusté */
-        box-sizing: border-box;
-        min-height: 100vh;
-        
-        background-color: #f4f4f9; /* Assure que le texte masque les figures précédentes */
-        position: relative; 
-        z-index: 10;
-    }
-
-    /* Le conteneur de carte MapLibre */
-    .map-container {
-        /* Pour respecter le format carré, on peut fixer une taille maximale */
-        width: 90%; 
-        height: 90%;
-        max-width: 600px; /* Optionnel : Limiter la taille max de la carte */
-        max-height: 600px;
-    }
-    
-    /* Le fond de la carte MapLibre lui-même (peut nécessiter un style MapLibre personnalisé pour être transparent) */
-    .maplibregl-canvas {
-        background-color: transparent !important;
-    }
-
-    .figure-caption {
-        position: absolute;
-        bottom: 20px;
-        color: white;
-        background-color: rgba(0, 0, 0, 0.6);
-        padding: 5px 10px;
-        z-index: 20;
-        font-size: 0.9em;
-    }
-
-    /* Styles pour les illustrations dans les tableaux/cartes */
-    .thumb {
-        width: 50px;
-        height: 30px;
-        object-fit: cover;
-    }
-
-    .illustration-overlay {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 30;
-        /* Ces éléments seront animés par ScrollMagic/GSAP */
-    }
-    .illustration {
-        width: 150px;
-        height: auto;
-        display: block;
-        margin-bottom: 10px;
-        opacity: 0; /* Caché par défaut, révélé par ScrollMagic */
-    }
-</style>
+        /* Styles pour les figures statiques simplifiées */
+        .static-figure-content {
+            padding: 40px;
+            max-width: 80%;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
@@ -122,82 +85,82 @@
         </div>
         <div class="content-block">
             <h1>Rapport de Mission : Opérations Aériennes</h1>
-            <p>Ici, le texte d'introduction et le contexte de la mission. L'utilisateur défile vers le bas pour révéler la première section thématique.</p>
+            <p>Ici, le texte d'introduction et le contexte de la mission. Défilez vers le bas pour commencer l'analyse.</p>
         </div>
-        
     </section>
 
- <section class="section-container" id="defenses">
+    <section class="section-container" id="defenses">
         
         <div class="figure-full-screen" id="fig-tableau-defenses">
-            <table class="figure-content">
+            <div class="static-figure-content">
                 <caption>Tableau 1 : Spécifications des équipements défensifs</caption>
-                <thead>
-                    <tr><th>Équipement</th><th>Portée (km)</th><th>Illustration</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Défense Type A</td><td>5</td><td><img src="./images/defense_a.jpg" alt="Type A" class="thumb"></td></tr>
-                    <tr><td>Défense Type B</td><td>12</td><td><img src="./images/defense_b.jpg" alt="Type B" class="thumb"></td></tr>
-                </tbody>
-            </table>
+                <table>
+                    <thead>
+                        <tr><th>Équipement</th><th>Portée (km)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Défense Type A</td><td>5</td></tr>
+                        <tr><td>Défense Type B</td><td>12</td></tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 20px;">(Les illustrations ont été retirées pour éviter les erreurs 404)</p>
+            </div>
         </div>
         
         <div class="content-block">
             <h2>II. Équipements Défensifs</h2>
-            <p>Ce bloc de texte explique en détail le Tableau 1 ci-dessus. Il met en évidence les performances clés, les types de menaces gérées par ces systèmes et leur fiabilité. C'est ici que l'analyse commence.</p>
+            <p>Ce bloc explique en détail le Tableau 1 ci-dessus. Il met en évidence les performances clés des systèmes A et B. L'analyse des vulnérabilités commence ici.</p>
         </div>
 
         <div class="content-block" id="map-start-trigger">
             <p>
-                La zone opérationnelle est caractérisée par des **zones de hauteurs** (indiquées par les hachures sur la carte) qui offrent une protection naturelle. L'organisation des défenses suit ces reliefs. 
-                <br>
-                La carte générale (à gauche) révèle la densité du déploiement.
+                La zone opérationnelle est caractérisée par des **zones de hauteurs** (couche de GeoJSON à gauche) offrant une protection. La carte générale (à gauche) révèle la densité du déploiement.
             </p>
         </div>
 
         <div class="figure-full-screen" id="fig-carte-defenses">
             <div id="map-defenses" class="map-container"></div>
-            <p class="figure-caption">Analyse du déploiement des équipements défensifs.</p>
+            <p class="figure-caption">Vue générale des équipements défensifs et des secteurs.</p>
         </div>
         
         <div class="content-block">
-            <p>Cette vue d'ensemble montre une forte concentration dans les secteurs 1 et 2, des zones que nous allons analyser en détail. La densité y est maximale, rendant une approche frontale impossible. Les zones moins couvertes correspondent souvent aux accès naturels difficiles.</p>
+            <p>Cette vue d'ensemble, cadrée sur les zones de relief (Hauteurs), montre une forte concentration dans les secteurs 1 et 2 (bordures rouges), des zones que nous allons analyser en détail. Le fond de carte est rétabli pour le contexte géographique.</p>
         </div>
 
         <div class="content-block" id="trigger-secteur-1">
             <p>
-                <strong>Secteur 1 - Zone Alpha :</strong> Ce secteur est protégé par un bouclier électromagnétique à basse altitude. L'analyse de sa structure (bordure rouge sur le zoom) montre qu'une approche par les hauteurs est impossible. 
-                <br>
-                Le zoom cible les POI critiques (points d'intérêt) associés à ce bouclier.
+                <strong>Secteur 1 - Zone Alpha :</strong> Ce secteur est protégé par un bouclier électromagnétique. Le zoom sur ce secteur (cadre rouge) cible les POI critiques associés.
             </p>
         </div>
 
         <div class="content-block" id="trigger-secteur-2">
             <p>
-                <strong>Secteur 2 - Zone Beta :</strong> Contrairement au Secteur 1, le Secteur 2 présente une défense plus dispersée, combinant des unités mobiles et des installations fixes. L'absence de relief important dans cette zone (hauteurs) suggère une menace venant de la surface.
-                <br>
-                Le zoom révèle que les points d'intérêts (POI) y sont moins groupés, mais chaque POI est critique.
+                <strong>Secteur 2 - Zone Beta :</strong> Le Secteur 2 présente une défense plus dispersée. L'absence de relief important dans cette zone suggère une menace venant de la surface.
             </p>
         </div>
 
         <div class="content-block" id="end-defenses-trigger">
-            <p>Synthèse : Les défenses sont concentrées mais prévisibles. Les vulnérabilités sont dans le Secteur 2. Maintenant, examinons les **réseaux de communication**, qui sont souvent le talon d'Achille de ce type de déploiement.</p>
+            <p>Synthèse des Défenses. Nous examinons maintenant les **réseaux de communication** pour identifier le point de défaillance unique.</p>
         </div>
     </section>
 
     <section class="section-container" id="communication">
 
         <div class="figure-full-screen" id="fig-schema-comm">
-            <img src="./images/schema_comm.png" alt="Schéma du réseau de communication" class="figure-content">
+            <div class="static-figure-content">
+                <h3>Schéma du Réseau de Communication</h3>
+                <p>(L'image du schéma a été retirée pour éviter les erreurs 404)</p>
+                <div style="width: 250px; height: 150px; border: 2px dashed #333; margin: 20px auto;">[Remplacement Visuel Temporaire]</div>
+            </div>
         </div>
 
         <div class="content-block">
             <h2>III. Équipements de Communication</h2>
-            <p>Description détaillée de l'architecture du réseau de communication. Explication des nœuds principaux et des relais secondaires. Ce texte défile pour présenter le schéma à gauche.</p>
+            <p>Description détaillée de l'architecture du réseau. Ce texte défile pour présenter le schéma (à gauche).</p>
         </div>
         
         <div class="content-block" id="map-start-comm-trigger">
-            <p>La carte suivante illustre le déploiement spatial de ce réseau, mettant en évidence les lignes de communication principales (traits tiretés).</p>
+            <p>La carte suivante illustre le déploiement spatial de ce réseau, mettant en évidence les lignes de communication principales.</p>
         </div>
         
         <div class="figure-full-screen" id="fig-carte-comm">
@@ -206,18 +169,11 @@
         </div>
         
         <div class="content-block">
-            <p>Analyse de la vue d'ensemble : Le réseau est centralisé autour de la zone X, créant un point de défaillance unique. Une perturbation ici affecterait toute la chaîne.</p>
+            <p>Analyse de la vue d'ensemble du réseau de communication. Le réseau est centralisé, créant un point de défaillance unique.</p>
         </div>
 
     </section>
 
-    <section class="section-container" id="mercenaires">
-        <div class="content-block">
-            <h2>IV. Capacités des Mercenaires</h2>
-            <p>Le contenu de la section finale viendra ici, suivi des figures correspondantes.</p>
-        </div>
-    </section>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/debug.addIndicators.min.js"></script>
